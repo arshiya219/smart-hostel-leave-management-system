@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Parent Dashboard</title>
+</head>
+<body>
+<h2>Welcome, <span th:text="${parent.parentName}"></span></h2>
+<h3>Child Leave Request Details</h3>
+
+<div th:if="${student != null}">
+    <p><b>Student ID:</b> <span th:text="${student.studentId}"></span></p>
+    <p><b>Student Name:</b> <span th:text="${student.studentName}"></span></p>
+    <p><b>Room Number:</b> <span th:text="${student.roomNumber}"></span></p>
+    <p><b>Reason:</b> <span th:text="${student.reason}"></span></p>
+    <p><b>From:</b> <span th:text="${student.fromDate}"></span></p>
+    <p><b>To:</b> <span th:text="${student.toDate}"></span></p>
+    <p><b>OTP Code (from student):</b> <span th:text="${student.otpCode}"></span></p>
+
+    <form th:action="@{/parent/approve}" method="post">
+        <input type="hidden" name="requestId" th:value="${student.requestId}">
+        <label>Enter OTP to Approve:</label>
+        <input type="text" name="otpCode" required><br><br>
+
+        <button type="submit">Approve</button>
+    </form>
+
+    <p style="color:green;" th:text="${success}"></p>
+    <p style="color:red;" th:text="${error}"></p>
+</div>
+
+<div th:if="${student == null}">
+    <p>No student leave request found.</p>
+</div>
+
+</body>
+</html>

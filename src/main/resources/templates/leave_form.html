@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Leave Request Form</title>
+</head>
+<body>
+    <h2>Student Leave Request</h2>
+
+    <form th:action="@{/students/leave}" th:object="${student}" method="post">
+
+        <label>Student ID:</label>
+        <input type="text" th:field="*{studentId}" required /><br/><br/>
+
+        <label>Student Name:</label>
+        <input type="text" th:field="*{studentName}" required /><br/><br/>
+
+        <label>Department:</label>
+        <input type="text" th:field="*{department}" required /><br/><br/>
+
+        <label>Room Number:</label>
+        <input type="text" th:field="*{roomNumber}" required /><br/><br/>
+
+        <label>Reason for Leave:</label>
+        <input type="text" th:field="*{reason}" required /><br/><br/>
+
+        <label>From Date:</label>
+        <input type="date" th:field="*{fromDate}" required /><br/><br/>
+
+        <label>To Date:</label>
+        <input type="date" th:field="*{toDate}" required /><br/><br/>
+
+        <label>Parent ID:</label>
+        <input type="text" th:field="*{parentId}" required /><br/><br/>
+
+        <button type="submit">Submit Leave Request</button>
+    </form>
+</body>
+</html>
