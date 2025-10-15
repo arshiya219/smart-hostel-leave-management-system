@@ -43,22 +43,12 @@ public class StudentController {
             model.addAttribute("error", "No parent is registered for the student ID: " + student.getStudentId() + ". Please contact administration.");
             return "leave_form";
         }
-        // Generate OTP for parent
-        String otp = String.valueOf(new Random().nextInt(900000) + 100000);
-        student.setOtpCode(otp);
         student.setOtpVerified(false);
         student.setParentStatus("Pending");
         student.setTeacherStatus("Pending");
         student.setHostelcoStatus("Pending");
         student.setHodStatus("Pending");
         student.setOverallStatus("Pending");
-
-        // Send the OTP via email
-        try {
-            emailService.sendOtpEmail(parent.getEmail(), "OTP for Student Leave Request", otp);
-        } catch (Exception e) {
-            System.err.println("Error sending email: " + e.getMessage());
-        }
 
         studentRepository.save(student);
         model.addAttribute("student", student);

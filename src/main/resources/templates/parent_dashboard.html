@@ -7,6 +7,9 @@
 <h2>Welcome, <span th:text="${parent.parentName}"></span>!</h2>
 <h3>Your Children's Leave Requests</h3>
 
+<p style="color:green;" th:if="${success}" th:text="${success}"></p>
+<p style="color:red;" th:if="${error}" th:text="${error}"></p>
+
 <div th:if="${!students.isEmpty()}">
     <div th:each="student : ${students}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
         <h4>Request for <span th:text="${student.studentName}"></h4>
@@ -18,16 +21,22 @@
 
         <!-- Show approval form only if status is Pending -->
         <div th:if="${student.parentStatus == 'Pending'}">
-            <form th:action="@{/parent/approve}" method="post" style="display: inline-block; vertical-align: top; margin-right: 10px;">
-                <input type="hidden" name="requestId" th:value="${student.requestId}">
-                <label>Enter OTP to Approve:</label>
-                <input type="text" name="otpCode" required><br><br>
-                <button type="submit">Approve</button>
-            </form>
-            <form th:action="@{/parent/reject}" method="post" style="display: inline-block; vertical-align: bottom;">
-                <input type="hidden" name="requestId" th:value="${student.requestId}">
-                <button type="submit">Reject</button>
-            </form>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <form id="approveForm" th:action="@{/parent/approve}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="hidden" name="requestId" th:value="${student.requestId}">
+                    <label>Enter OTP to Approve:</label>
+                    <input type="text" name="otpCode" required>
+                </form>
+                <form th:action="@{/parent/generate-otp}" method="post" style="display: contents;">
+                    <input type="hidden" name="requestId" th:value="${student.requestId}" />
+                    <button type="submit">Get OTP</button>
+                </form>
+                <button type="submit" form="approveForm">Approve</button>
+                <form th:action="@{/parent/reject}" method="post" style="display: contents;">
+                    <input type="hidden" name="requestId" th:value="${student.requestId}">
+                    <button type="submit">Reject</button>
+                </form>
+            </div>
         </div>
         <!-- Show QR Code if completely approved -->
         <div th:if="${student.overallStatus == 'Approved'}">
@@ -36,8 +45,6 @@
         </div>
     </div>
 </div>
-<p style="color:green;" th:if="${success}" th:text="${success}"></p>
-<p style="color:red;" th:if="${error}" th:text="${error}"></p>
 <div th:if="${students.isEmpty()}">
     <p>There are no pending requests of your children</p>
 </div>
