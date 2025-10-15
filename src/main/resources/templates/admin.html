@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - User Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .role-section {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .role-section h2 { margin-top: 0; color: #0056b3; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <h1>Admin: Create New Users</h1>
+
+    <div class="container">
+        <!-- Parent Section -->
+        <div class="role-section">
+            <h2>Parent</h2>
+            <a th:href="@{/parent/create}" class="btn">Register Parent</a>
+        </div>
+
+        <!-- Teacher Section -->
+        <div class="role-section">
+            <h2>Teacher</h2>
+            <a th:href="@{/teacher/create}" class="btn">Register Teacher</a>
+        </div>
+
+        <!-- Hostel Coordinator Section -->
+        <div class="role-section">
+            <h2>Hostel Coordinator</h2>
+            <a th:href="@{/hostel-coordinator/create}" class="btn">Register Coordinator</a>
+        </div>
+
+        <!-- HOD Section -->
+        <div class="role-section">
+            <h2>HOD</h2>
+            <a th:href="@{/hod/create}" class="btn">Register HOD</a>
+        </div>
+    </div>
+    <br/>
+</body>
+</html>
