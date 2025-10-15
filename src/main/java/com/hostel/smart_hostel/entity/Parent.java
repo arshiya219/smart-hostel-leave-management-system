@@ -21,4 +21,5 @@ public class Parent {
 
     private String studentId;
     private Department department;
+    private String email;
 }

@@ -9,4 +9,5 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
     Parent findByUsername(String username);
     List<Parent> findAllByUsername(String username);
     Parent findByUsernameAndStudentId(String username, String studentId);
+    Parent findByStudentId(String studentId);
 }

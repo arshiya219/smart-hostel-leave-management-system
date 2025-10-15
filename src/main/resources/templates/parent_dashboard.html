@@ -7,9 +7,6 @@
 <h2>Welcome, <span th:text="${parent.parentName}"></span>!</h2>
 <h3>Your Children's Leave Requests</h3>
 
-<p style="color:green;" th:if="${success}" th:text="${success}"></p>
-<p style="color:red;" th:if="${error}" th:text="${error}"></p>
-
 <div th:if="${!students.isEmpty()}">
     <div th:each="student : ${students}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
         <h4>Request for <span th:text="${student.studentName}"></h4>
@@ -21,7 +18,6 @@
 
         <!-- Show approval form only if status is Pending -->
         <div th:if="${student.parentStatus == 'Pending'}">
-            <p><b>OTP Code (from student):</b> <span th:text="${student.otpCode}"></span></p>
             <form th:action="@{/parent/approve}" method="post" style="display: inline-block; vertical-align: top; margin-right: 10px;">
                 <input type="hidden" name="requestId" th:value="${student.requestId}">
                 <label>Enter OTP to Approve:</label>
@@ -40,7 +36,8 @@
         </div>
     </div>
 </div>
-
+<p style="color:green;" th:if="${success}" th:text="${success}"></p>
+<p style="color:red;" th:if="${error}" th:text="${error}"></p>
 <div th:if="${students.isEmpty()}">
     <p>There are no pending requests of your children</p>
 </div>
