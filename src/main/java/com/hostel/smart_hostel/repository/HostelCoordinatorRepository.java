@@ -6,4 +6,3 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface HostelCoordinatorRepository extends JpaRepository<HostelCoordinator, Long> {
     HostelCoordinator findByUsername(String username);
 }
-

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hostel Coordinator Login</title>
+</head>
+<body>
+<h2>Hostel Coordinator Login</h2>
+
+<form th:action="@{/hostel-coordinator/login}" method="post">
+    <label>Username:</label>
+    <input type="text" name="username" required><br><br>
+
+    <label>Password:</label>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+<a th:href="@{/hostel-coordinator/create}">Create New Coordinator</a>
+</body>
+</html>

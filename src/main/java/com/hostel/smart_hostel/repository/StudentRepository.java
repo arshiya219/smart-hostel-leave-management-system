@@ -16,10 +16,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByDepartmentAndTeacherStatusAndParentStatus(Department department, String teacherStatus, String parentStatus);
 
     // Hostel Coordinator: get leaves for their department by hostel coordinator status
-    List<Student> findByDepartmentAndHostelcoStatus(Department department, String status);
+    List<Student> findByDepartmentAndHostelcoStatusAndTeacherStatus(Department department, String hostelcoStatus, String teacherStatus);
 
     // HOD: get leaves for their department by HOD status
-    List<Student> findByDepartmentAndHodStatus(Department department, String status);
+    List<Student> findByDepartmentAndHodStatusAndHostelcoStatus(Department department, String hodStatus, String hostelcoStatus);
 
     // Parent: get a single student by studentId
     List<Student> findByStudentId(String studentId); // A student can have multiple leave requests

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HOD Dashboard</title>
+</head>
+<body>
+<h2>Welcome, <span th:text="${hod.name}"></span>!</h2>
+<h3>Pending Leave Requests</h3>
+
+<p style="color:green;" th:if="${message}" th:text="${message}"></p>
+
+<div th:if="${!requests.isEmpty()}">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Reason</th>
+                <th>Hostel Coordinator Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="request : ${requests}">
+                <td th:text="${request.studentId}"></td>
+                <td th:text="${request.studentName}"></td>
+                <td th:text="${request.fromDate}"></td>
+                <td th:text="${request.toDate}"></td>
+                <td th:text="${request.reason}"></td>
+                <td th:text="${request.hostelcoStatus}"></td>
+                <td>
+                    <form th:action="@{/hod/approve}" method="post" style="display:inline;">
+                        <input type="hidden" name="requestId" th:value="${request.requestId}" />
+                        <button type="submit">Approve</button>
+                    </form>
+                    <form th:action="@{/hod/reject}" method="post" style="display:inline;">
+                        <input type="hidden" name="requestId" th:value="${request.requestId}" />
+                        <button type="submit">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:if="${requests.isEmpty()}">
+    <p>No pending requests requiring your approval at this time.</p>
+</div>
+
+</body>
+</html>

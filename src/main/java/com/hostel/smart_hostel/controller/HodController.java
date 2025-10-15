@@ -11,24 +11,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/hod")
 public class HodController {
 
     private final HodRepository hodRepo;
     private final StudentRepository studentRepo;
+    private Hod loggedInHod;
 
     public HodController(HodRepository hodRepo, StudentRepository studentRepo) {
         this.hodRepo = hodRepo;
         this.studentRepo = studentRepo;
     }
 
-    @GetMapping("/hodLogin")
+    @GetMapping("/create")
+    public String showCreateHodForm(Model model) {
+        model.addAttribute("hod", new Hod());
+        return "create_hod";
+    }
+
+    @PostMapping("/create")
+    public String createHod(@ModelAttribute Hod hod, Model model) {
+        try {
+            if (hodRepo.findByUsername(hod.getUsername()) != null) {
+                model.addAttribute("error", "Username already exists.");
+                model.addAttribute("hod", hod);
+                return "create_hod";
+            }
+            hodRepo.save(hod);
+            model.addAttribute("message", "HOD created successfully!");
+            model.addAttribute("hod", new Hod());
+        } catch (Exception e) {
+            model.addAttribute("error", "An error occurred during creation: " + e.getMessage());
+            model.addAttribute("hod", hod);
+        }
+        return "create_hod";
+    }
+
+    @GetMapping("/login")
     public String loginPage() { return "hodLogin"; }
 
-    @PostMapping("/hodLogin")
+    @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         Hod hod = hodRepo.findByUsername(username);
         if(hod != null && hod.getPassword().equals(password)) {
-            List<Student> requests = studentRepo.findByDepartmentAndHodStatus(hod.getDepartment(), "Pending");
+            loggedInHod = hod;
+            List<Student> requests = studentRepo.findByDepartmentAndHodStatusAndHostelcoStatus(hod.getDepartment(), "Pending", "Approved");
             model.addAttribute("hod", hod);
             model.addAttribute("requests", requests);
             return "hodDashboard";
@@ -37,21 +64,42 @@ public class HodController {
         return "hodLogin";
     }
 
-    @PostMapping("/approveByHod")
-    public String approve(@RequestParam Long studentId) {
-        Student student = studentRepo.findById(studentId).orElse(null);
-        if(student != null) {
+    @PostMapping("/approve")
+    public String approve(@RequestParam Long requestId, Model model) {
+        Student student = studentRepo.findById(requestId).orElse(null);
+        if(student != null && loggedInHod != null && student.getDepartment() == loggedInHod.getDepartment()) {
             student.setHodStatus("Approved");
-            // If all approvals done → final
-            if(student.isOtpVerified() &&
-               student.getParentStatus().equals("Approved") &&
-               student.getTeacherStatus().equals("Approved") &&
-               student.getHostelcoStatus().equals("Approved")) {
-                student.setOverallStatus("Approved");
-                student.setQrCodeData("QR:" + student.getStudentId() + "|" + student.getFromDate() + "|" + student.getToDate());
-            }
+            student.setOverallStatus("Approved");
+            student.setStatus("Completely Approved");
+            student.setQrCodeData("QR:" + student.getStudentId() + "|" + student.getFromDate() + "|" + student.getToDate());
             studentRepo.save(student);
+            model.addAttribute("message", "Request for " + student.getStudentName() + " has been fully approved.");
+        } else {
+            model.addAttribute("error", "Failed to approve request.");
         }
-        return "redirect:/hodLogin";
+        // Refresh dashboard
+        List<Student> requests = studentRepo.findByDepartmentAndHodStatusAndHostelcoStatus(loggedInHod.getDepartment(), "Pending", "Approved");
+        model.addAttribute("hod", loggedInHod);
+        model.addAttribute("requests", requests);
+        return "hodDashboard";
+    }
+
+    @PostMapping("/reject")
+    public String reject(@RequestParam Long requestId, Model model) {
+        Student student = studentRepo.findById(requestId).orElse(null);
+        if (student != null && loggedInHod != null && student.getDepartment() == loggedInHod.getDepartment()) {
+            student.setHodStatus("Rejected");
+            student.setOverallStatus("Rejected");
+            student.setStatus("Rejected by HOD");
+            studentRepo.save(student);
+            model.addAttribute("message", "Request for " + student.getStudentName() + " has been rejected.");
+        } else {
+            model.addAttribute("error", "Failed to reject request.");
+        }
+        // Refresh dashboard
+        List<Student> requests = studentRepo.findByDepartmentAndHodStatusAndHostelcoStatus(loggedInHod.getDepartment(), "Pending", "Approved");
+        model.addAttribute("hod", loggedInHod);
+        model.addAttribute("requests", requests);
+        return "hodDashboard";
     }
 }

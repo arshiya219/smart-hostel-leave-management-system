@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HOD Login</title>
+</head>
+<body>
+<h2>HOD Login</h2>
+
+<form th:action="@{/hod/login}" method="post">
+    <label>Username:</label>
+    <input type="text" name="username" required><br><br>
+
+    <label>Password:</label>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+<a th:href="@{/hod/create}">Create New HOD</a>
+</body>
+</html>
