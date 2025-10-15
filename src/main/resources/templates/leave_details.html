@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Leave Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .details { border: 1px solid #000; padding: 1em; background-color: #f9f9f9; }
+        .approved { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Approved Leave Details</h2>
+    <div class="details" th:if="${student != null}">
+        <p><strong>Student ID:</strong> <span th:text="${student.studentId}"></span></p>
+        <p><strong>Student Name:</strong> <span th:text="${student.studentName}"></span></p>
+        <p><strong>Department:</strong> <span th:text="${student.department}"></span></p>
+        <p><strong>From:</strong> <span th:text="${student.fromDate}"></span></p>
+        <p><strong>To:</strong> <span th:text="${student.toDate}"></span></p>
+        <p><strong>Status:</strong> <span class="approved" th:text="${student.status}"></span></p>
+    </div>
+</body>
+</html>

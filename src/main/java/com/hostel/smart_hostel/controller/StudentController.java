@@ -1,6 +1,8 @@
 package com.hostel.smart_hostel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,24 @@ public class StudentController {
         studentRepository.save(student);
         model.addAttribute("student", student);
         return "leave_success"; // leave_success.html
+    }
+
+    @GetMapping("/leave-details/{requestId}")
+    public String showLeaveDetails(@PathVariable Long requestId, Model model) {
+        Student student = studentRepository.findById(requestId).orElse(null);
+        if (student != null && "Approved".equals(student.getOverallStatus())) {
+            model.addAttribute("student", student);
+            return "leave_details";
+        }
+        return "error_page"; // Or a page indicating the request is not found or not approved
+    }
+
+    @GetMapping("/qr/{requestId}")
+    public ResponseEntity<byte[]> getQRCode(@PathVariable Long requestId) {
+        Student student = studentRepository.findById(requestId).orElse(null);
+        if (student != null && student.getQrCode() != null) {
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(student.getQrCode());
+        }
+        return ResponseEntity.notFound().build();
     }
 }

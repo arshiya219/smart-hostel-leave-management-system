@@ -33,6 +33,11 @@
                 <button type="submit">Reject</button>
             </form>
         </div>
+        <!-- Show QR Code if completely approved -->
+        <div th:if="${student.overallStatus == 'Approved'}">
+            <p><b>Status:</b> <span style="color:green; font-weight:bold;" th:text="${student.status}"></span></p>
+            <img th:src="@{/students/qr/{id}(id=${student.requestId})}" alt="QR Code" />
+        </div>
     </div>
 </div>
 

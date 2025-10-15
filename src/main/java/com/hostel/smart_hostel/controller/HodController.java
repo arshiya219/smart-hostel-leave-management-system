@@ -2,6 +2,7 @@ package com.hostel.smart_hostel.controller;
 
 import com.hostel.smart_hostel.entity.Hod;
 import com.hostel.smart_hostel.entity.Student;
+import com.hostel.smart_hostel.utility.QRCodeGenerator;
 import com.hostel.smart_hostel.repository.HodRepository;
 import com.hostel.smart_hostel.repository.StudentRepository;
 import org.springframework.stereotype.Controller;
@@ -71,13 +72,30 @@ public class HodController {
             student.setHodStatus("Approved");
             student.setOverallStatus("Approved");
             student.setStatus("Completely Approved");
-            student.setQrCodeData("QR:" + student.getStudentId() + "|" + student.getFromDate() + "|" + student.getToDate());
-            studentRepo.save(student);
-            model.addAttribute("message", "Request for " + student.getStudentName() + " has been fully approved.");
+            // Generate QR Code
+            try {
+                // Embed leave details directly into the QR code as text
+                String qrCodeText ="--- Leave Details ---\n" +
+                                  "Student ID: " + student.getStudentId() + "\n" +
+                                  "Name: " + student.getStudentName() + "\n" +
+                                  "Department: " + student.getDepartment() + "\n" +
+                                  "College: SRM\n" +
+                                  "From: " + student.getFromDate() + "\n" +
+                                  "To: " + student.getToDate() + "\n" +
+                                  "Reason: " + student.getReason() + "\n" +
+                                  "Status: " + student.getStatus();
+
+                student.setQrCode(QRCodeGenerator.getQRCodeImage(qrCodeText, 250, 250));
+                studentRepo.save(student);
+                model.addAttribute("student", student);
+                return "hod_approval_success"; // Forward to the new success page
+            } catch (Exception e) {
+                model.addAttribute("error", "Could not generate QR Code for the request.");
+            }
         } else {
             model.addAttribute("error", "Failed to approve request.");
         }
-        // Refresh dashboard
+        // On error, refresh the dashboard with an error message
         List<Student> requests = studentRepo.findByDepartmentAndHodStatusAndHostelcoStatus(loggedInHod.getDepartment(), "Pending", "Approved");
         model.addAttribute("hod", loggedInHod);
         model.addAttribute("requests", requests);

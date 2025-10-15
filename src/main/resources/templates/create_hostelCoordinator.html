@@ -6,9 +6,6 @@
 <body>
     <h2>Create Hostel Coordinator</h2>
 
-    <p th:if="${message}" style="color:green;" th:text="${message}"></p>
-    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
-
     <form th:action="@{/hostel-coordinator/create}" method="post" th:object="${coordinator}">
         <div>
             <label for="name">Coordinator Name:</label>
@@ -33,7 +30,8 @@
         <br/>
         <button type="submit">Create Coordinator</button>
     </form>
+    <p th:if="${message}" style="color:green;" th:text="${message}"></p>
+    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
     <br/>
-    <a th:href="@{/hostel-coordinator/login}">Back to Login</a>
 </body>
 </html>

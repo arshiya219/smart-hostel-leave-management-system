@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Approval Successful</title>
+</head>
+<body>
+    <h2>Request Approved Successfully!</h2>
+    <p>The leave request for <strong th:text="${student.studentName}"></strong> (<span th:text="${student.studentId}"></span>) has been completely approved.</p>
+
+    <h3>Generated QR Code</h3>
+    <p>This QR code can be scanned to verify the leave details.</p>
+    <div th:if="${student.qrCode != null}">
+        <img th:src="@{/students/qr/{id}(id=${student.requestId})}" alt="QR Code" />
+    </div>
+
+    <br/><br/>
+    <a th:href="@{/hod/login}">Back to Dashboard</a>
+</body>
+</html>

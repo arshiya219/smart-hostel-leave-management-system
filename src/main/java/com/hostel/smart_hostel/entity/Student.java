@@ -3,6 +3,7 @@ package com.hostel.smart_hostel.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -36,5 +37,6 @@ public class Student {
     private String hodStatus = "Pending";
     private String overallStatus = "Pending";           // final overall approval
 
-    private String qrCodeData;       // store QR code data/path (after HOD approval)
+    @Lob
+    private byte[] qrCode;       // store QR code image (after HOD approval)
 }

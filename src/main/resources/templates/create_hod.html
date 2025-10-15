@@ -6,9 +6,6 @@
 <body>
     <h2>Create Head of Department</h2>
 
-    <p th:if="${message}" style="color:green;" th:text="${message}"></p>
-    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
-
     <form th:action="@{/hod/create}" method="post" th:object="${hod}">
         <div>
             <label for="name">HOD Name:</label>
@@ -33,7 +30,8 @@
         <br/>
         <button type="submit">Create HOD</button>
     </form>
+    <p th:if="${message}" style="color:green;" th:text="${message}"></p>
+    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
     <br/>
-    <a th:href="@{/hod/login}">Back to Login</a>
 </body>
 </html>
