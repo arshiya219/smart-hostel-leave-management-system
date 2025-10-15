@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Parent</title>
+</head>
+<body>
+    <h2>Create Parent</h2>
+    <form th:action="@{/parent/create}" method="post" th:object="${parent}">
+        <div>
+            <label for="parentName">Parent Name:</label>
+            <input type="text" id="parentName" th:field="*{parentName}" required/>
+        </div>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}" required/>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" required/>
+        </div>
+        <div>
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" th:field="*{studentId}" required/>
+        </div>
+        <div>
+            <label for="department">Department:</label>
+            <select id="department" th:field="*{department}" required>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="MECHANICAL">MECHANICAL</option>
+                <option value="CIVIL">CIVIL</option>
+                <option value="EEE">EEE</option>
+                <option value="IT">IT</option>
+            </select>
+        </div>
+        <button type="submit">Create Parent</button>
+    </form>
+    <p th:if="${message}" style="color:green;" th:text="${message}"></p>
+    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
+</body>
+</html>

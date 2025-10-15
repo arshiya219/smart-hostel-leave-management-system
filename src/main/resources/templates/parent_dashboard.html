@@ -4,32 +4,40 @@
     <title>Parent Dashboard</title>
 </head>
 <body>
-<h2>Welcome, <span th:text="${parent.parentName}"></span></h2>
-<h3>Child Leave Request Details</h3>
+<h2>Welcome, <span th:text="${parent.parentName}"></span>!</h2>
+<h3>Your Children's Leave Requests</h3>
 
-<div th:if="${student != null}">
-    <p><b>Student ID:</b> <span th:text="${student.studentId}"></span></p>
-    <p><b>Student Name:</b> <span th:text="${student.studentName}"></span></p>
-    <p><b>Room Number:</b> <span th:text="${student.roomNumber}"></span></p>
-    <p><b>Reason:</b> <span th:text="${student.reason}"></span></p>
-    <p><b>From:</b> <span th:text="${student.fromDate}"></span></p>
-    <p><b>To:</b> <span th:text="${student.toDate}"></span></p>
-    <p><b>OTP Code (from student):</b> <span th:text="${student.otpCode}"></span></p>
+<p style="color:green;" th:if="${success}" th:text="${success}"></p>
+<p style="color:red;" th:if="${error}" th:text="${error}"></p>
 
-    <form th:action="@{/parent/approve}" method="post">
-        <input type="hidden" name="requestId" th:value="${student.requestId}">
-        <label>Enter OTP to Approve:</label>
-        <input type="text" name="otpCode" required><br><br>
+<div th:if="${!students.isEmpty()}">
+    <div th:each="student : ${students}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h4>Request for <span th:text="${student.studentName}"></h4>
+        <p><b>Room Number:</b> <span th:text="${student.roomNumber}"></span></p>
+        <p><b>Reason:</b> <span th:text="${student.reason}"></span></p>
+        <p><b>From:</b> <span th:text="${student.fromDate}"></span></p>
+        <p><b>To:</b> <span th:text="${student.toDate}"></span></p>
+        <p><b>Parent Approval Status:</b> <span th:text="${student.parentStatus}"></span></p>
 
-        <button type="submit">Approve</button>
-    </form>
-
-    <p style="color:green;" th:text="${success}"></p>
-    <p style="color:red;" th:text="${error}"></p>
+        <!-- Show approval form only if status is Pending -->
+        <div th:if="${student.parentStatus == 'Pending'}">
+            <p><b>OTP Code (from student):</b> <span th:text="${student.otpCode}"></span></p>
+            <form th:action="@{/parent/approve}" method="post" style="display: inline-block; vertical-align: top; margin-right: 10px;">
+                <input type="hidden" name="requestId" th:value="${student.requestId}">
+                <label>Enter OTP to Approve:</label>
+                <input type="text" name="otpCode" required><br><br>
+                <button type="submit">Approve</button>
+            </form>
+            <form th:action="@{/parent/reject}" method="post" style="display: inline-block; vertical-align: bottom;">
+                <input type="hidden" name="requestId" th:value="${student.requestId}">
+                <button type="submit">Reject</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<div th:if="${student == null}">
-    <p>No student leave request found.</p>
+<div th:if="${students.isEmpty()}">
+    <p>There are no pending requests of your children</p>
 </div>
 
 </body>

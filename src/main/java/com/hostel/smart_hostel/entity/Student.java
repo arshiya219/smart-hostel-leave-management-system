@@ -18,7 +18,7 @@ public class Student {
 
     private String studentId;        // unique student ID (e.g., S101)
     private String studentName;      // full name
-    private String department;       // e.g., Mechanical, ECE, etc.
+    private Department department;       // e.g., Mechanical, ECE, etc.
     private String roomNumber;
     private String reason;
     private String fromDate;

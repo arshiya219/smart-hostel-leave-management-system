@@ -16,7 +16,14 @@
         <input type="text" th:field="*{studentName}" required /><br/><br/>
 
         <label>Department:</label>
-        <input type="text" th:field="*{department}" required /><br/><br/>
+        <select th:field="*{department}" required>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="MECHANICAL">MECHANICAL</option>
+            <option value="CIVIL">CIVIL</option>
+            <option value="EEE">EEE</option>
+            <option value="IT">IT</option>
+        </select><br/><br/>
 
         <label>Room Number:</label>
         <input type="text" th:field="*{roomNumber}" required /><br/><br/>
@@ -29,9 +36,6 @@
 
         <label>To Date:</label>
         <input type="date" th:field="*{toDate}" required /><br/><br/>
-
-        <label>Parent ID:</label>
-        <input type="text" th:field="*{parentId}" required /><br/><br/>
 
         <button type="submit">Submit Leave Request</button>
     </form>

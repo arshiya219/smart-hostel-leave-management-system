@@ -3,7 +3,9 @@ package com.hostel.smart_hostel.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"parentName", "studentId"}))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +19,6 @@ public class Parent {
     private String username;
     private String password;
 
-    private String studentId;      // Linked to Student.studentId
-    private String department;     // Department of the student
+    private String studentId;
+    private Department department;
 }
